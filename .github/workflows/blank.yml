@@ -9,14 +9,14 @@ jobs:
     runs-on: runner-macos-tam-test
     strategy:
       matrix:
-        component: [ event ]
+        component: [ task_api ]
     container: python:3.11.7
     services:
       mysql:
         image: "mysql:8.0.28"
         env:
           MYSQL_ROOT_PASSWORD: root1234
-          MYSQL_DATABASE: test_rc
+          MYSQL_DATABASE: django_api_testing
 
     steps:
       - name: Checkout code
