@@ -1,0 +1,55 @@
+name: Quality Assurance (Detect file changes to trigger related unit tests and automation tests)
+on:
+  pull_request:
+    branches:
+      - master
+    types: [opened, reopened, synchronize]
+jobs:
+  quality-assurance:
+    runs-on: runner-macos-tam-test
+    strategy:
+      matrix:
+        component: [ event ]
+    container: python:3.11.7
+    services:
+      mysql:
+        image: "mysql:8.0.28"
+        env:
+          MYSQL_ROOT_PASSWORD: root1234
+          MYSQL_DATABASE: test_rc
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+#      - name: Detect changed files
+#        id: changed_files
+#        uses: dorny/paths-filter@v3
+#        with:
+#          token: ${{ secrets.GITHUB_TOKEN }}
+#          list-files: shell
+#          filters: |
+#            event:
+#              - '**/ai_events/**'
+
+      - name: Activate virtual environment
+        run: echo APP_ENVIRONMENT=test >> $GITHUB_ENV
+
+      - name: Run unit tests
+#        if: steps.changed_files.outputs[matrix.component] == 'true'
+        run: |
+          echo "Running unit tests for component: ${{ matrix.component }}"
+
+      - name: Install dependencies
+#        if: steps.changed_files.outputs[matrix.component] == 'true'
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+#      - name: Run migrations
+##        if: steps.changed_files.outputs[matrix.component] == 'true'
+#        run: |
+#          python src/manage.py migrate
+
+      - name: Run unit tests
+        run: pytest tests/${{matrix.component}}s/*
