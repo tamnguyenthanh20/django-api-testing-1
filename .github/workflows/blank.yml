@@ -2,7 +2,7 @@ name: Quality Assurance (Detect file changes to trigger related unit tests and a
 on:
   pull_request:
     branches:
-      - master
+      - main
     types: [opened, reopened, synchronize]
 jobs:
   quality-assurance:
