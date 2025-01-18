@@ -29,6 +29,7 @@ class Tasks(generics.GenericAPIView):
                 "page": page_num,
                 "fake1": "fake1",
                 "fake2": "fake2",
+                "fake3": "fake3",
                 "last_page": math.ceil(total_tasks / limit_num),
                 "tasks": serializer.data,
             }
