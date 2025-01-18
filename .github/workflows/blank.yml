@@ -6,9 +6,8 @@ on:
     types: [opened, reopened, synchronize]
 jobs:
   test:
-    runs-on: self-hosted
+    runs-on: runner-macos-tam-tes
     name: Run tests on self-hosted runner
-    labels: runner-macos-tam-test
 
     steps:
       - name: Checkout code
